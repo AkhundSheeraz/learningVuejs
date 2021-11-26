@@ -15,7 +15,8 @@
                 <div class="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    :class="{ brdrred: redborder }"
+                    class="form-control inpx"
                     placeholder="Name"
                     v-model="signup.name"
                   />
@@ -23,7 +24,8 @@
                 <div class="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    :class="{ brdrred: redborder }"
+                    class="form-control inpx"
                     placeholder="E-mail"
                     v-model="signup.email"
                   />
@@ -31,7 +33,8 @@
                 <div class="form-group">
                   <input
                     type="password"
-                    class="form-control"
+                    :class="{ brdrred: redborder }"
+                    class="form-control inpx"
                     placeholder="Password"
                     v-model="signup.password"
                   />
@@ -43,7 +46,8 @@
                 <div class="form-group">
                   <input
                     type="password"
-                    class="form-control"
+                    :class="{ brdrred: redborder }"
+                    class="form-control inpx"
                     placeholder="Confirm password"
                     v-model="signup.password_confirmation"
                   />
@@ -71,43 +75,69 @@
 
 <script>
 export default {
-  data(){
-    return{
-      signup:{
-        name:null,
-        email:null,
-        password:null,
-        password_confirmation:null,
-      }
-    }
+  data() {
+    return {
+      signup: {
+        name: null,
+        email: null,
+        password: null,
+        password_confirmation: null,
+      },
+      redborder: false,
+    };
   },
-  methods:{
-    get_signupInputs(e){
-      e.preventDefault;
+  methods: {
+    get_signupInputs(e) {
+      e.preventDefault();
       const formdata = JSON.parse(JSON.stringify(this.signup));
-      console.log(formdata); 
-    }
-  }
- 
+      let validation = Object.values(formdata).every(val => val === null || val.trim().length == 0);
+      console.log(validation);
+      if (validation) {
+        //console.log("form is empty");
+        let placeholders = document.querySelectorAll(".inpx");
+        placeholders.forEach((placeholders) => {
+          let val = placeholders.placeholder;
+          placeholders.placeholder = val + " required!";
+        });
+        this.redborder = true;
+        setTimeout(() => {
+          this.redborder = false;
+          placeholders.forEach((placeholders) => {
+            let val = placeholders.placeholder;
+            placeholders.placeholder = val.replace('required!','');
+          });
+        }, 4000);
+      } else {
+        console.log(formdata);
+      }
+      //let checkKeys = !Object.values(formdata).every(val => val === null || val == '');
+    },
+  },
 };
 </script>
 
 
 
 <style scoped>
-.home{
-  background-image: url('~@/assets/img/home.jpg');
+.home {
+  background-image: url("~@/assets/img/home.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
-#remember_me{
-  margin-right: 10px
+#remember_me {
+  margin-right: 10px;
 }
-.signup_btn:hover{
+.signup_btn:hover {
   border: #4a8181 1px solid;
-  color:  #75ffff !important;
+  color: #75ffff !important;
+}
+.brdrred {
+  border: red 1.5px solid !important;
+}
+.brdrred::placeholder {
+  color: red !important;
 }
 
-@import url('~@/assets/customcss/login.css');
+@import url("~@/assets/customcss/login.css");
 </style>
