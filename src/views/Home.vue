@@ -87,14 +87,46 @@ export default {
     };
   },
   methods: {
+    remove_error(nodeArray){
+      setTimeout(() => {
+          this.redborder = false;
+          nodeArray.forEach((element) => {
+            let val = element.placeholder;
+            if(val){
+              if(element.classList.contains('brdrred')){
+                element.classList.remove('brdrred');
+              }
+              element.placeholder = val.replace('required!','');
+            }
+          });
+        }, 4000);
+    },
+
+    validator(data){
+      const validated = {};
+      for(let element of data ){
+         if(element.value == null || element.value.trim().length == 0){
+           let pl = element.placeholder;
+           element.placeholder = pl + " required!";
+           element.classList.add('brdrred');
+           validated[element.placeholder] = false;   
+          }
+          else{
+            validated[element.placeholder] = true;   
+          }
+       }
+      let passed = Object.values(validated).every(val => val == true);
+      this.remove_error(data);
+      return passed;
+    },
+
     get_signupInputs(e) {
       e.preventDefault();
       const formdata = JSON.parse(JSON.stringify(this.signup));
       let validation = Object.values(formdata).every(val => val === null || val.trim().length == 0);
-      console.log(validation);
+      let placeholders = document.querySelectorAll(".inpx");
+      // console.log(validation);
       if (validation) {
-        //console.log("form is empty");
-        let placeholders = document.querySelectorAll(".inpx");
         placeholders.forEach((placeholders) => {
           let val = placeholders.placeholder;
           placeholders.placeholder = val + " required!";
@@ -108,7 +140,10 @@ export default {
           });
         }, 4000);
       } else {
-        console.log(formdata);
+        let checkvalidation = this.validator(placeholders);
+        if(checkvalidation){
+          console.log(formdata);
+        }
       }
       //let checkKeys = !Object.values(formdata).every(val => val === null || val == '');
     },
