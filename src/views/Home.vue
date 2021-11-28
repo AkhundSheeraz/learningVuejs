@@ -58,6 +58,7 @@
                 </div>
                 <div class="form-group">
                   <button
+                    id="btn_signup"
                     type="submit"
                     class="form-control btn submit px-3 signup_btn"
                   >
@@ -87,35 +88,36 @@ export default {
     };
   },
   methods: {
-    remove_error(nodeArray){
+    remove_error(nodeArray) {
       setTimeout(() => {
-          this.redborder = false;
-          nodeArray.forEach((element) => {
-            let val = element.placeholder;
-            if(val){
-              if(element.classList.contains('brdrred')){
-                element.classList.remove('brdrred');
-              }
-              element.placeholder = val.replace('required!','');
+        this.redborder = false;
+        nodeArray.forEach((element) => {
+          let val = element.placeholder;
+          if (val) {
+            if (element.classList.contains("brdrred")) {
+              element.classList.remove("brdrred");
             }
-          });
-        }, 4000);
+            element.placeholder = val.replace("required!", "");
+          }
+          document.getElementById("btn_signup").disabled = false;
+        });
+      }, 3000);
     },
 
-    validator(data){
+    validator(data) {
       const validated = {};
-      for(let element of data ){
-         if(element.value == null || element.value.trim().length == 0){
-           let pl = element.placeholder;
-           element.placeholder = pl + " required!";
-           element.classList.add('brdrred');
-           validated[element.placeholder] = false;   
-          }
-          else{
-            validated[element.placeholder] = true;   
-          }
-       }
-      let passed = Object.values(validated).every(val => val == true);
+      document.getElementById("btn_signup").disabled = true;
+      for (let element of data) {
+        if (element.value == null || element.value.trim().length == 0) {
+          let pl = element.placeholder;
+          element.placeholder = pl + " required!";
+          element.classList.add("brdrred");
+          validated[element.placeholder] = false;
+        } else {
+          validated[element.placeholder] = true;
+        }
+      }
+      let passed = Object.values(validated).every((val) => val == true);
       this.remove_error(data);
       return passed;
     },
@@ -123,10 +125,14 @@ export default {
     get_signupInputs(e) {
       e.preventDefault();
       const formdata = JSON.parse(JSON.stringify(this.signup));
-      let validation = Object.values(formdata).every(val => val === null || val.trim().length == 0);
+      let validation = Object.values(formdata).every(
+        (val) => val === null || val.trim().length == 0
+      );
       let placeholders = document.querySelectorAll(".inpx");
+      let signupbtn = document.getElementById("btn_signup");
       // console.log(validation);
       if (validation) {
+        signupbtn.disabled = true;
         placeholders.forEach((placeholders) => {
           let val = placeholders.placeholder;
           placeholders.placeholder = val + " required!";
@@ -136,12 +142,13 @@ export default {
           this.redborder = false;
           placeholders.forEach((placeholders) => {
             let val = placeholders.placeholder;
-            placeholders.placeholder = val.replace('required!','');
+            placeholders.placeholder = val.replace("required!", "");
+            signupbtn.disabled = false;
           });
-        }, 4000);
+        }, 3000);
       } else {
         let checkvalidation = this.validator(placeholders);
-        if(checkvalidation){
+        if (checkvalidation) {
           console.log(formdata);
         }
       }
@@ -172,6 +179,13 @@ export default {
 }
 .brdrred::placeholder {
   color: red !important;
+}
+.btn:disabled{
+    background:rgba(255, 255, 255, 0.08) !important;
+    border-radius: 40px;
+    box-shadow: none !important;
+    font-size: 15px;
+    text-transform: uppercase;
 }
 
 @import url("~@/assets/customcss/login.css");
