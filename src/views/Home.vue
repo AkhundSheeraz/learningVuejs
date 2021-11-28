@@ -41,7 +41,7 @@
                   <span
                     toggle="#password-field"
                     class="fa fa-fw fa-eye field-icon toggle-password"
-                  ></span>
+                  ><font-awesome-icon :class="{ cross:crossIcon }" class="text-danger" icon="exclamation-circle" /></span>
                 </div>
                 <div class="form-group">
                   <input
@@ -54,7 +54,7 @@
                   <span
                     toggle="#password-field"
                     class="fa fa-fw fa-eye field-icon toggle-password"
-                  ></span>
+                  ><font-awesome-icon :class="{ cross:crossIcon }" class="text-danger" icon="exclamation-circle" /></span>
                 </div>
                 <div class="form-group">
                   <button
@@ -85,6 +85,7 @@ export default {
         password_confirmation: null,
       },
       redborder: false,
+      crossIcon: true
     };
   },
   methods: {
@@ -186,6 +187,9 @@ export default {
     box-shadow: none !important;
     font-size: 15px;
     text-transform: uppercase;
+}
+.cross{
+  display: none !important;
 }
 
 @import url("~@/assets/customcss/login.css");
