@@ -41,7 +41,11 @@
                   <span
                     toggle="#password-field"
                     class="fa fa-fw fa-eye field-icon toggle-password"
-                  ><font-awesome-icon :class="{ cross:crossIcon }" class="text-danger" icon="exclamation-circle" /></span>
+                    ><font-awesome-icon
+                      :class="{ cross: crossIcon }"
+                      class="text-danger"
+                      icon="exclamation-circle"
+                  /></span>
                 </div>
                 <div class="form-group">
                   <input
@@ -54,7 +58,11 @@
                   <span
                     toggle="#password-field"
                     class="fa fa-fw fa-eye field-icon toggle-password"
-                  ><font-awesome-icon :class="{ cross:crossIcon }" class="text-danger" icon="exclamation-circle" /></span>
+                    ><font-awesome-icon
+                      :class="{ cross: crossIcon }"
+                      class="text-danger"
+                      icon="exclamation-circle"
+                  /></span>
                 </div>
                 <div class="form-group">
                   <button
@@ -85,7 +93,7 @@ export default {
         password_confirmation: null,
       },
       redborder: false,
-      crossIcon: true
+      crossIcon: true,
     };
   },
   methods: {
@@ -98,7 +106,7 @@ export default {
             if (element.classList.contains("brdrred")) {
               element.classList.remove("brdrred");
             }
-            element.placeholder = val.replace("required!", "");
+            element.placeholder = val.replace(" required!", "");
           }
           document.getElementById("btn_signup").disabled = false;
         });
@@ -126,33 +134,12 @@ export default {
     get_signupInputs(e) {
       e.preventDefault();
       const formdata = JSON.parse(JSON.stringify(this.signup));
-      let validation = Object.values(formdata).every(
-        (val) => val === null || val.trim().length == 0
-      );
       let placeholders = document.querySelectorAll(".inpx");
-      let signupbtn = document.getElementById("btn_signup");
-      // console.log(validation);
-      if (validation) {
-        signupbtn.disabled = true;
-        placeholders.forEach((placeholders) => {
-          let val = placeholders.placeholder;
-          placeholders.placeholder = val + " required!";
-        });
-        this.redborder = true;
-        setTimeout(() => {
-          this.redborder = false;
-          placeholders.forEach((placeholders) => {
-            let val = placeholders.placeholder;
-            placeholders.placeholder = val.replace("required!", "");
-            signupbtn.disabled = false;
-          });
-        }, 3000);
-      } else {
-        let checkvalidation = this.validator(placeholders);
-        if (checkvalidation) {
-          console.log(formdata);
-        }
+      let checkvalidation = this.validator(placeholders);
+      if (checkvalidation) {
+        console.log(formdata);
       }
+
       //let checkKeys = !Object.values(formdata).every(val => val === null || val == '');
     },
   },
@@ -181,14 +168,14 @@ export default {
 .brdrred::placeholder {
   color: red !important;
 }
-.btn:disabled{
-    background:rgba(255, 255, 255, 0.08) !important;
-    border-radius: 40px;
-    box-shadow: none !important;
-    font-size: 15px;
-    text-transform: uppercase;
+.btn:disabled {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 40px;
+  box-shadow: none !important;
+  font-size: 15px;
+  text-transform: uppercase;
 }
-.cross{
+.cross {
   display: none !important;
 }
 
